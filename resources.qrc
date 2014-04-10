@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>vshader.normals.glsl</file>
+        <file>fshader.normals.glsl</file>
+        <file>vertface_brain_reduced.obj</file>
+        <file>colortable4</file>
+        <file>colortable3</file>
+        <file>colortable2</file>
+        <file>colortable1</file>
+        <file>dtu.jpg</file>
+    </qresource>
+</RCC>
