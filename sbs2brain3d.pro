@@ -8,6 +8,9 @@ QML_IMPORT_PATH =
 
 symbian:TARGET.UID3 = 0xEF0833B6
 QT += opengl
+QT += core 
+QT += widgets
+QT += network
 
 # Smart Installer package's UID
 # This UID is from the protected range and therefore the package will
@@ -42,7 +45,7 @@ SOURCES += main.cpp \
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
 
-include(../../core/src/sbs2_binary_decryptor.pri)
+include(../smartphonebrainscanner2-core/src/sbs2_binary_decryptor.pri)
 
 HEADERS += \
     colordata.h \
@@ -57,12 +60,19 @@ RESOURCES += \
     resources.qrc
 
 
-macx: LIBS += -L$$PWD/../../../sbs2-emotiv-decryptor-source/sbs2emotivdecryptor-build-desktop-Desktop_Qt_4_8_0_for_GCC__Qt_SDK__Debug/ -lsbs2emotivdecryptor
+macx: LIBS += -L$$PWD/../decryptor_libraries/ -lsbs2emotivdecryptor
 
-INCLUDEPATH += $$PWD/../../../sbs2-emotiv-decryptor-source/sbs2emotivdecryptor-build-desktop-Desktop_Qt_4_8_0_for_GCC__Qt_SDK__Debug
-DEPENDPATH += $$PWD/../../../sbs2-emotiv-decryptor-source/sbs2emotivdecryptor-build-desktop-Desktop_Qt_4_8_0_for_GCC__Qt_SDK__Debug
+INCLUDEPATH += $$PWD/../decryptor_libraries
+DEPENDPATH += $$PWD/../decryptor_libraries
 
-macx: PRE_TARGETDEPS += $$PWD/../../../sbs2-emotiv-decryptor-source/sbs2emotivdecryptor-build-desktop-Desktop_Qt_4_8_0_for_GCC__Qt_SDK__Debug/libsbs2emotivdecryptor.a
+macx: PRE_TARGETDEPS += $$PWD/../decryptor_libraries/libsbs2emotivdecryptor.a
+
+unix:!macx: LIBS += -L$$PWD/../decryptor_libraries/ -lsbs2emotivdecryptor_android
+
+INCLUDEPATH += $$PWD/../decryptor_libraries
+DEPENDPATH += $$PWD/../decryptor_libraries
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../decryptor_libraries/libsbs2emotivdecryptor_android.a
 
 OTHER_FILES += \
     android/res/values-zh-rCN/strings.xml \
@@ -132,10 +142,3 @@ OTHER_FILES += \
     android/res/drawable-mdpi/icon.png \
     android/res/values/libs.xml
 
-
-unix:!macx: LIBS += -L$$PWD/../../../sbs2-emotiv-decryptor-bin/android/ -lsbs2emotivdecryptor
-
-INCLUDEPATH += $$PWD/../../../sbs2-emotiv-decryptor-bin/android
-DEPENDPATH += $$PWD/../../../sbs2-emotiv-decryptor-bin/android
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../../sbs2-emotiv-decryptor-bin/android/libsbs2emotivdecryptor.a

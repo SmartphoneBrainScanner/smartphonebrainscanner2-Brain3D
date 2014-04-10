@@ -11,7 +11,7 @@ MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
 
     (*colorData) = 0;
 
-    QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(soureReconstructionPowerReady()));
+    QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(sourceReconstructionPowerReady()));
 
 
     //QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionReady()),this,SLOT(sourceReconstructionReady()));
@@ -105,9 +105,9 @@ void MyCallback::getData(Sbs2Packet *packet)
 }
 
 
-void MyCallback::soureReconstructionPowerReady()
+void MyCallback::sourceReconstructionPowerReady()
 {
-    createColorMatrix(sbs2DataHandler->getSourceReconstructionPowerValues());
+    createColorMatrix(sbs2DataHandler->getSourceReconstructionSpectrogramValues());
     updateModel();
 }
 

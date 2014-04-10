@@ -38,7 +38,7 @@ private:
 signals:
     
 public slots:
-    void soureReconstructionPowerReady();
+    void sourceReconstructionPowerReady();
     void changeBand(QString name);
     void updateColorMap(int colorMap);
     

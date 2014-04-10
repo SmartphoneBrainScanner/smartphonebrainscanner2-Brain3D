@@ -42,7 +42,7 @@ void Model::load(QString filename)
     model = glmReadOBJ(filename.toLatin1().data());
     if(model->numtexcoords < 1)
     {
-	qWarning() << "Missing UV map.";
+	qWarning() << "Missing UV map:" << filename.toLatin1();
     }
 
     GLMgroup* group;
