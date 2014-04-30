@@ -11,6 +11,7 @@ QT += opengl
 QT += core 
 QT += widgets
 QT += network
+QT += concurrent
 
 # Smart Installer package's UID
 # This UID is from the protected range and therefore the package will

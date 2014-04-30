@@ -1,6 +1,6 @@
-#include <QtGui/QApplication>
+// #include <QtGui/QApplication>
 #include "qmlapplicationviewer.h"
-#include <QtDeclarative>
+#include <QQuickView>
 
 #include <mycallback.h>
 #include <mainwindow.h>
