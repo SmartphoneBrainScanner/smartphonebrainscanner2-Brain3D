@@ -1,6 +1,4 @@
-#include <QtGui/QApplication>
-#include "qmlapplicationviewer.h"
-#include <QtDeclarative>
+#include <QApplication>>
 
 #include <mycallback.h>
 #include <mainwindow.h>
@@ -11,7 +9,7 @@
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-    QScopedPointer<QApplication> app(createApplication(argc, argv));
+    QApplication app(argc, argv);
     qDebug() << "rootAppPath: "<<Sbs2Common::setDefaultRootAppPath();
 
     MainWindow mw;
@@ -21,9 +19,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     Sbs2EmotivDataReader* sbs2DataReader = Sbs2EmotivDataReader::New(myCallback);
 
 
-    QObject::connect(app.data(),SIGNAL(aboutToQuit()),mw.glwidget,SLOT(quit()));
-    QObject::connect(app.data(), SIGNAL(aboutToQuit()), sbs2DataReader, SLOT(aboutToQuit()));
+    QObject::connect(&app,SIGNAL(aboutToQuit()),mw.glwidget,SLOT(quit()));
+    QObject::connect(&app,SIGNAL(aboutToQuit()),sbs2DataReader,SLOT(aboutToQuit()));
 
 
-    return app->exec();
+    return app.exec();
 }
