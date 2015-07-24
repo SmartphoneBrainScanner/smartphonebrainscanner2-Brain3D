@@ -428,7 +428,7 @@ void GLWidget::updateGyroX(double gyroX_)
 void GLWidget::updateGyroY(double gyroY_)
 {
     dataFlowing = 1;
-    setInfoText("");
+    //setInfoText(""); - see Github issue #4
     gyroY = gyroY_;
     if (abs(gyroY - 1650) < 20) gyroY = 1650;
     gyroY -= 1650;
