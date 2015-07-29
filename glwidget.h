@@ -5,6 +5,7 @@
 #include <QtOpenGL>
 #include <model.h>
 #include <sbs2common.h>
+#include <dtu_array_2d.h>
 
 class GLWidget : public QGLWidget
 {
@@ -12,6 +13,7 @@ class GLWidget : public QGLWidget
 public:
     explicit GLWidget(QWidget *parent = 0);
     void updateColorForVertex(int vertex, double r, double g, double b, double a);
+    void updateWordCloud(DTU::DtuArray2D<double>* responseMatrix);
     
 private:
     void paintGL ();
@@ -55,6 +57,10 @@ private:
     QRect lowBetaRect;
     QRect betaRect;
 
+    QRect wordRect;
+    QVariant mynumber;
+    DTU::DtuArray2D<double>* responseDataMatrix;
+
     QRect rotationRect;
 
     int deltaOn;
@@ -95,6 +101,7 @@ public slots:
     void updateGyroX(double gyroX_);
     void updateGyroY(double gyroY_);
     void deviceFound(QMap<QString, QVariant> params);
+    void valueSignal(QVariant number);
 
 };
 

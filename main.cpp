@@ -22,6 +22,5 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QObject::connect(&app,SIGNAL(aboutToQuit()),mw.glwidget,SLOT(quit()));
     QObject::connect(&app,SIGNAL(aboutToQuit()),sbs2DataReader,SLOT(aboutToQuit()));
 
-
     return app.exec();
 }

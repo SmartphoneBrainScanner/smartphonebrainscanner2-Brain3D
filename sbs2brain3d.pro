@@ -55,3 +55,5 @@ HEADERS += \
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES +=
