@@ -1,11 +1,11 @@
 #include "wordcloud.h"
 
-void wordcloud::Wordcloud()
+void wordcloud::initializewordcloud()
 {
-    //loadWordList();
-    //initializePairs();
-    //loadWordMatrix();
-    qDebug() << "wordcloud init success"
+    loadWordList();
+    initializePairs();
+    loadWordMatrix();
+    qDebug() << "initialization success!";
 }
 
 void wordcloud::loadWordList()
@@ -13,14 +13,15 @@ void wordcloud::loadWordList()
     //Load the words in a list of strings:
     QFile file(Sbs2Common::getRootAppPath() + QString("Annotator_words.csv"));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QDebug() << "There was an error loading file Annotator_words.csv";
+        qDebug() << "There was an error loading file Annotator_words.csv";
     }
 
     while (!file.atEnd()) {
-        QString wordLine = in.readLine();
+        QString wordLine = file.readLine();
         //wordList will contain all words possible in the wordcloud
         wordList = wordLine.split(",");
     }
+                qDebug() << "wordlist load! with size " << wordList.size();
 }
 
 void wordcloud::loadWordMatrix()
@@ -28,29 +29,30 @@ void wordcloud::loadWordMatrix()
     //Load the vertex-weight-matrix:
     QFile file(Sbs2Common::getRootAppPath() + QString("Annotator_matrix.csv"));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QDebug() << "There was an error loading file Annotator_matrix.csv";
+        qDebug() << "There was an error loading file Annotator_matrix.csv";
     }
 
     int row = 0;
     while (!file.atEnd()) {
-        QString weightLine = in.readLine();
-        QString weightList = weightLine.split(",");
+        QString weightLine = file.readLine();
+        QStringList weightList = weightLine.split(",");
 
-        for (int col = 0; col < size(weightList); col++)
+        for (int col = 0; col < weightList.size(); col++)
         {
             *weightMatrix[row][col] = (weightList[col]).toDouble();
         }
         row++;
     }
-
+qDebug() << "wordmatrix load!";
 }
 
 void wordcloud::initializePairs()
 {
-    for (int i = 0; i < size(wordList); i++)
+    for (int i = 0; i < wordList.size(); i++)
     {
-        (wordValuePairs[i]).first = wordList[i];
+        wordValuePairs.append(qMakePair(wordList[i],0));
     }
+qDebug() << "pairs initialized";
 }
 
 void wordcloud::calculatePairs(DTU::DtuArray2D<double>* responsematrix_ )
@@ -74,9 +76,9 @@ void wordcloud::calculatePairs(DTU::DtuArray2D<double>* responsematrix_ )
     // get responsevector, multiply with weightmatrix, enter values into pairs, sort pairs.
 
     //sorting:
-    std::sort(v.begin(), v.end(), [](const QPair<QString,double> &left, const sQPair<QString,double> &right) {
+    /*std::sort(v.begin(), v.end(), [](const QPair<QString,double> &left, const sQPair<QString,double> &right) {
         return left.second < right.second;
-    });
+    });*/
 }
 
 

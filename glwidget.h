@@ -100,7 +100,7 @@ public slots:
     void updateGyroX(double gyroX_);
     void updateGyroY(double gyroY_);
     void deviceFound(QMap<QString, QVariant> params);
-    void valueSignal(QVariant number);
+    //void valueSignal(QVariant number);
 
 };
 

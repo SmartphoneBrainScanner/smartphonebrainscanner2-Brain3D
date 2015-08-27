@@ -6,17 +6,16 @@
 #include <sbs2datahandler.h>
 #include <glwidget.h>
 
-class wordcloud : public QObject
+class wordcloud
 {
-    Q_OBJECT
 public:
-    void Wordcloud();
+    void initializewordcloud();
     void calculatePairs(DTU::DtuArray2D<double>* responsematrix_ );
 
 private:
-    QString wordList;
+    QStringList wordList;
     DTU::DtuArray2D<double>* weightMatrix;
-    QPair<QString, double> wordValuePairs;
+    QList<QPair<QString, double> > wordValuePairs;
     DTU::DtuArray2D<double>* responsevector;
 
     void loadWordList();

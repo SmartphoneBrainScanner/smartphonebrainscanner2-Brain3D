@@ -38,7 +38,7 @@ private:
     void createColorMatrix2(DTU::DtuArray2D<double> *verticesData_);
 
 signals:
-    void valueSignal(QVariant value);
+   // void valueSignal(QVariant value);
     
 public slots:
     void sourceReconstructionPowerReady();
