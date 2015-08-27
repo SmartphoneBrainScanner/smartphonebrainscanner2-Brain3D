@@ -27,20 +27,25 @@ void wordcloud::loadWordList()
 void wordcloud::loadWordMatrix()
 {
     //Load the vertex-weight-matrix:
-    QFile file(Sbs2Common::getRootAppPath() + QString("Annotator_matrix.csv"));
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QFile file1(Sbs2Common::getRootAppPath() + QString("Annotator_matrix.csv"));
+    if (!file1.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "There was an error loading file Annotator_matrix.csv";
     }
 
     int row = 0;
-    while (!file.atEnd()) {
-        QString weightLine = file.readLine();
+    while (!file1.atEnd()) {
+        QString weightLine = file1.readLine();
         QStringList weightList = weightLine.split(",");
+    //qDebug() << weightList.size(); //1032
+    //qDebug() << (weightList[0]).toDouble();
 
-        for (int col = 0; col < weightList.size(); col++)
+    //weightMatrix = new DTU::DtuArray2D<double>(1028,weightList.size()-1);
+    weightMatrix = new DTU::DtuArray2D<double>(5000,5000);
+        for (int col = 0; col < weightList.size()-1; col++)
         {
-            *weightMatrix[row][col] = (weightList[col]).toDouble();
+            (*weightMatrix)[row][col] = (weightList[col]).toDouble();
         }
+        //qDebug() << row;
         row++;
     }
 qDebug() << "wordmatrix load!";
@@ -55,6 +60,7 @@ void wordcloud::initializePairs()
 qDebug() << "pairs initialized";
 }
 
+
 void wordcloud::calculatePairs(DTU::DtuArray2D<double>* responsematrix_ )
 {
     responsevector = new DTU::DtuArray2D<double>(1,responsematrix_->dim2());
@@ -65,13 +71,12 @@ void wordcloud::calculatePairs(DTU::DtuArray2D<double>* responsematrix_ )
         double sum=0;
         for (int j=0; j<responsematrix_->dim1(); j++)
         {
-           sum += *responsematrix_[j][i];
+           sum += (*responsematrix_)[j][i];
         }
-        *responsevector[0][i] = sum;
-        qDebug() << sum;
+        (*responsevector)[0][i] = sum;
+
     }
-
-
+    qDebug() << "pairs are calculated";
 
     // get responsevector, multiply with weightmatrix, enter values into pairs, sort pairs.
 

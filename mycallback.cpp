@@ -14,7 +14,7 @@ MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
 
 
     QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(sourceReconstructionPowerReady()));
-    wordcloud WordCloud;
+
     WordCloud.initializewordcloud();
 
     //QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionReady()),this,SLOT(sourceReconstructionReady()));
@@ -111,17 +111,16 @@ void MyCallback::getData(Sbs2Packet *packet)
 
 void MyCallback::sourceReconstructionPowerReady()
 {
-             // responseDataMatrix = (sbs2DataHandler->getSourceReconstructionSpectrogramValues());
+    responseDataMatrix = (sbs2DataHandler->getSourceReconstructionSpectrogramValues());
     createColorMatrix(sbs2DataHandler->getSourceReconstructionSpectrogramValues());
     //qDebug() << (*responseDataMatrix)[0][500];
     updateModel();
-             //calculateDataForWordCloud();
+    calculateDataForWordCloud();
 }
 
 void MyCallback::calculateDataForWordCloud()
 {
-
-    //wordcloud->calculatePairs(responseDataMatrix);
+    WordCloud.calculatePairs(responseDataMatrix);
 }
 
 void MyCallback::createColorMatrix2(DTU::DtuArray2D<double> *verticesData_)
