@@ -11,14 +11,16 @@ MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
 
     (*colorData) = 0;
 
-    QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(sourceReconstructionPowerReady()));
 
+    QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(sourceReconstructionPowerReady()));
+    wordcloud::Wordcloud();
 
     //QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionReady()),this,SLOT(sourceReconstructionReady()));
 
     //QObject::connect(glwidget,SIGNAL(turnSourceReconstructionPowerOn(int,int,int,int, QString)),this,SLOT(turnSourceReconstructionPowerOn(int,int,int,int, QString)));
     QObject::connect(glwidget,SIGNAL(turnSourceReconstructionPowerOn(int,int,int,int,QString)),this,SLOT(turnOnSourceReconstructionLoreta(int,int,int,int,QString)));
     QObject::connect(glwidget,SIGNAL(changeBand(QString)),this,SLOT(changeBand(QString)));
+    QObject::connect(this, SIGNAL(valueSignal(QVariant)),glwidget,SLOT(valueSignal(QVariant)));
 
 
     QObject::connect(this,SIGNAL(deviceFoundSignal(QMap<QString,QVariant>)),glwidget,SLOT(deviceFound(QMap<QString,QVariant>)));
@@ -64,7 +66,7 @@ void MyCallback::changeBand(QString name)
     maxValues->clear();
     if (name.compare("delta"))
     {
-	lowFreq = 1;
+    lowFreq = 1;
 	highFreq = 4;
     }
     if (name.compare("theta"))
@@ -107,11 +109,18 @@ void MyCallback::getData(Sbs2Packet *packet)
 
 void MyCallback::sourceReconstructionPowerReady()
 {
+             // responseDataMatrix = (sbs2DataHandler->getSourceReconstructionSpectrogramValues());
     createColorMatrix(sbs2DataHandler->getSourceReconstructionSpectrogramValues());
+    //qDebug() << (*responseDataMatrix)[0][500];
     updateModel();
+             //calculateDataForWordCloud();
 }
 
+void MyCallback::calculateDataForWordCloud()
+{
 
+    wordcloud->calculatePairs(responseDataMatrix);
+}
 
 void MyCallback::createColorMatrix2(DTU::DtuArray2D<double> *verticesData_)
 {

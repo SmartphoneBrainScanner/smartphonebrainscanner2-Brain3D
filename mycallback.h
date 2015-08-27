@@ -5,6 +5,7 @@
 #include <sbs2datahandler.h>
 #include <glwidget.h>
 #include <QDateTime>
+#include <wordcloud.h>
 
 class MyCallback : public Sbs2Callback
 {
@@ -18,7 +19,7 @@ private:
     DTU::DtuArray2D<double>* verticesData;
     GLWidget* glwidget;
     DTU::DtuArray2D<double>* colorData;
-
+    DTU::DtuArray2D<double>* responseDataMatrix;
     int lowFreq; //included
     int highFreq; //excluded
     int visualized;
@@ -33,9 +34,11 @@ private:
 private:
     void createColorMatrix(DTU::DtuArray2D<double>* verticesData_);
     void updateModel();
+    void calculateDataForWordCloud();
     void createColorMatrix2(DTU::DtuArray2D<double> *verticesData_);
 
 signals:
+    void valueSignal(QVariant value);
     
 public slots:
     void sourceReconstructionPowerReady();

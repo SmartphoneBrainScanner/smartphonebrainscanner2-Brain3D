@@ -30,6 +30,9 @@ GLWidget::GLWidget(QWidget *parent) :
     infoText = "looking for device...";
     devicePresent = 0;
     dataFlowing = 0;
+
+    responseDataMatrix = new DTU::DtuArray2D<double>(1,1028);
+    (*responseDataMatrix) = 0;
 }
 
 void GLWidget::changeFrequency(QString name)
@@ -98,6 +101,8 @@ void GLWidget::resizeGL(int w, int h)
     infoTextRect = QRect(w/2 - 500, h/2 - 320, 1000, 640);
 
     rotationRect = QRect(w-buttonWidth,120,buttonWidth,60);
+
+    wordRect = QRect(w-buttonWidth,180+10,buttonWidth,300); // fill height is h-120-20-60-logoPixmap.height() - 10
 }
 
 void GLWidget::initializeGL()
@@ -233,7 +238,7 @@ void GLWidget::paintGL()
 	    painter.fillRect(alphaRect,QColor(239,150,8));
 	else
 	    painter.fillRect(alphaRect,QColor(49,154,49));
-	painter.drawText(alphaRect,Qt::AlignCenter,"8-12Hz"); //alpha
+    painter.drawText(alphaRect,Qt::AlignCenter,"8-12Hz"); //alpha
 
 	if (!lowBetaOn)
 	    painter.fillRect(lowBetaRect,QColor(239,150,8));
@@ -290,10 +295,28 @@ void GLWidget::paintGL()
 	painter.drawText(infoRect,Qt::AlignCenter, QString("Technical University of Denmark \n\n SmartphoneBrainScanner2: Tech Demo \n\n Jakob Eg Larsen, jel@imm.dtu.dk \n Arkadiusz Stopczynski, arks@imm.dtu.dk \n Carsten Stahlhut, cs@imm.dtu.dk \n Michael Kai Petersen, mkp@imm.dtu.dk \n Lars Kai Hansen, lkh@imm.dtu.dk"));
     }
 
+    //Wordcloud
+
+    painter.setPen(QColor("white"));
+
+    painter.fillRect(wordRect,QColor(156,81,0));
+
+    //painter.drawText(wordRect,Qt::AlignCenter,mynumber.toString());
+
+    //qDebug() << (*responseDataMatrix)[0][500];
+
     painter.end();
     swapBuffers();
 
+
 }
+
+
+/*void GLWidget::updateWordCloud(DTU::DtuArray2D<double>* responseMatrix)
+{
+    responseDataMatrix = responseMatrix;
+    //qDebug() << "updateWordCloud has been called";
+}*/
 
 void GLWidget::mousePressEvent(QMouseEvent* event)
 {
@@ -369,7 +392,7 @@ void GLWidget::mousePressEvent(QMouseEvent* event)
 	    changeFrequency("delta");
 	if (thetaRect.contains(event->pos()))
 	    changeFrequency("theta");
-	if (alphaRect.contains(event->pos()))
+    if (alphaRect.contains(event->pos()))
 	    changeFrequency("alpha");
 	if (lowBetaRect.contains(event->pos()))
 	    changeFrequency("lowBeta");

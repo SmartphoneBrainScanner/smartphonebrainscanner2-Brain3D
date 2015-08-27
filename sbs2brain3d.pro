@@ -40,7 +40,8 @@ SOURCES += main.cpp \
     glwidget.cpp \
     glm.cpp \
     model.cpp \
-    mycallback.cpp
+    mycallback.cpp \
+    wordcloud.cpp
 
 include(../smartphonebrainscanner2-core/src/sbs2.pri)
 
@@ -50,8 +51,11 @@ HEADERS += \
     glwidget.h \
     glm.h \
     model.h \
-    mycallback.h
+    mycallback.h \
+    wordcloud.h
 
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES +=
