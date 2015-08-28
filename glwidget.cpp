@@ -31,8 +31,7 @@ GLWidget::GLWidget(QWidget *parent) :
     devicePresent = 0;
     dataFlowing = 0;
 
-    responseDataMatrix = new DTU::DtuArray2D<double>(1,1028);
-    (*responseDataMatrix) = 0;
+
 }
 
 void GLWidget::changeFrequency(QString name)
@@ -303,7 +302,6 @@ void GLWidget::paintGL()
 
     //painter.drawText(wordRect,Qt::AlignCenter,mynumber.toString());
 
-    //qDebug() << (*responseDataMatrix)[0][500];
 
     painter.end();
     swapBuffers();
@@ -311,12 +309,11 @@ void GLWidget::paintGL()
 
 }
 
-
-/*void GLWidget::updateWordCloud(DTU::DtuArray2D<double>* responseMatrix)
+void GLWidget::updateWordCloud(QList<QPair<QString, double> >* wordValueList_)
 {
-    responseDataMatrix = responseMatrix;
+    wordValuePairs = wordValueList_;
     //qDebug() << "updateWordCloud has been called";
-}*/
+}
 
 void GLWidget::mousePressEvent(QMouseEvent* event)
 {

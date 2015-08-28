@@ -13,7 +13,7 @@ class GLWidget : public QGLWidget
 public:
     explicit GLWidget(QWidget *parent = 0);
     void updateColorForVertex(int vertex, double r, double g, double b, double a);
-    void updateWordCloud(DTU::DtuArray2D<double>* responseMatrix);
+    void updateWordCloud(QList<QPair<QString, double> >* wordValueList_);
     
 private:
     void paintGL ();
@@ -58,7 +58,7 @@ private:
     QRect betaRect;
 
     QRect wordRect;
-    DTU::DtuArray2D<double>* responseDataMatrix;
+    QList<QPair<QString, double> >* wordValuePairs;
 
     QRect rotationRect;
 

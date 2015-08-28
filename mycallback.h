@@ -13,14 +13,14 @@ class MyCallback : public Sbs2Callback
 public:
     explicit MyCallback(GLWidget* glwidget_, QObject *parent = 0);
     void getData(Sbs2Packet *packet);
-
+    void updateWordcloud(QList<QPair<QString, double> >* wordValueList_);
 
 private:
     DTU::DtuArray2D<double>* verticesData;
     GLWidget* glwidget;
     DTU::DtuArray2D<double>* colorData;
     DTU::DtuArray2D<double>* responseDataMatrix;
-    wordcloud WordCloud;
+    Wordcloud WordCloud;
     int lowFreq; //included
     int highFreq; //excluded
     int visualized;
@@ -37,6 +37,7 @@ private:
     void updateModel();
     void calculateDataForWordCloud();
     void createColorMatrix2(DTU::DtuArray2D<double> *verticesData_);
+
 
 signals:
    // void valueSignal(QVariant value);

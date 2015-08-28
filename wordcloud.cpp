@@ -55,7 +55,7 @@ void Wordcloud::initializePairs()
 {
     for (int i = 0; i < wordList.size(); i++)
     {
-        wordValuePairs.append(qMakePair(wordList[i],0));
+        wordValuePairs->append(qMakePair(wordList[i],0));
     }
 qDebug() << "pairs initialized";
 }
@@ -80,28 +80,19 @@ void Wordcloud::calculatePairs(DTU::DtuArray2D<double>* responseMatrix_ )
     responseWeightValues = new DTU::DtuArray2D<double>(1,weightMatrix->dim2());
     responseVector->multiply(weightMatrix, 1, responseWeightValues);
 
-    for (int i=0; i<wordValuePairs.size(); i++)
+    for (int i=0; i<wordValuePairs->size(); i++)
     {
-        wordValuePairs[i].second = (*responseWeightValues)[0][i];
+        (*wordValuePairs)[i].second = (*responseWeightValues)[0][i];
 
     }
 
     //sorting:
-    std::sort(wordValuePairs.begin(), wordValuePairs.end(), myfunction);
+
+    std::sort(wordValuePairs->begin(), wordValuePairs->end(), sorter<QString, double>);
+
+    //Need to get wordValuePairs to glmwidget, how?
+    //MyCallback->updateWordcloud(wordValuePairs);
 }
-
-/*struct wordcloud::QPairSecondComparer
-{
-    template<typename T1, typename T2>
-    bool operator()(const QPair<T1,T2> & a, const QPair<T1,T2> & b)
-    {
-        return a.second < b.second;
-    }
-} sorting;*/
-
-bool Wordcloud::myfunction (const QPair<QString, double> &a, const QPair<QString, double> &b) { return a.second < b.second; }
-
-
 
 
 

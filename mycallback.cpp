@@ -123,6 +123,11 @@ void MyCallback::calculateDataForWordCloud()
     WordCloud.calculatePairs(responseDataMatrix);
 }
 
+void MyCallback::updateWordcloud(QList<QPair<QString, double> >* wordValueList_)
+{
+    glwidget->updateWordCloud(wordValueList_);
+}
+
 void MyCallback::createColorMatrix2(DTU::DtuArray2D<double> *verticesData_)
 {
     for (int vertex = 0; vertex<verticesData_->dim2(); ++vertex)
