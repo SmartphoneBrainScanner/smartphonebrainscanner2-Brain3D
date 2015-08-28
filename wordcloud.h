@@ -5,8 +5,9 @@
 #include <sbs2callback.h>
 #include <sbs2datahandler.h>
 #include <glwidget.h>
+#include <algorithm>
 
-class wordcloud
+class Wordcloud
 {
 public:
     void initializewordcloud();
@@ -16,11 +17,13 @@ private:
     QStringList wordList;
     DTU::DtuArray2D<double>* weightMatrix;
     QList<QPair<QString, double> > wordValuePairs;
-    DTU::DtuArray2D<double>* responsevector;
+    DTU::DtuArray2D<double>* responseVector;
+    DTU::DtuArray2D<double>* responseWeightValues;
 
     void loadWordList();
     void loadWordMatrix();
     void initializePairs();
+    bool myfunction(const QPair<QString, double> &a, const QPair<QString, double> &b);
 
 
 signals:
