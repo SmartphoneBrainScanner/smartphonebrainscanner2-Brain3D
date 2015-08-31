@@ -313,7 +313,7 @@ void GLWidget::updateWordCloud(QList<QPair<QString, double> > wordValueList_)
 // TODO: Make into slot
 {
     //wordValuePairs = wordValueList_;
-
+    wordcloudDrawString = "Word     Value\n";
     for (int i=0; i<10; i++)
     {
     wordcloudDrawString += wordValueList_[i].first + "     " + QString::number(wordValueList_[i].second) + "\n";
