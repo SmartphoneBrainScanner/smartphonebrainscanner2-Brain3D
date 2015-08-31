@@ -20,7 +20,7 @@ private:
     GLWidget* glwidget;
     DTU::DtuArray2D<double>* colorData;
     DTU::DtuArray2D<double>* responseDataMatrix;
-    Wordcloud WordCloud;
+    Wordcloud wordCloud;
     int lowFreq; //included
     int highFreq; //excluded
     int visualized;

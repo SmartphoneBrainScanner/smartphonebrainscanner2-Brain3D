@@ -6,10 +6,11 @@
 #include <glwidget.h>
 #include <algorithm>
 
-class Wordcloud
+class Wordcloud : public QObject
 {
+    Q_OBJECT
 public:
-    void initializewordcloud();
+    explicit Wordcloud(QObject *parent = 0);
     void calculatePairs(DTU::DtuArray2D<double>* responsematrix_ );
 
 private:
@@ -22,10 +23,9 @@ private:
     void loadWordList();
     void loadWordMatrix();
     void initializePairs();
-    //bool myfunction(const QPair<QString, double> &a, const QPair<QString, double> &b);
-    //struct QPairSecondComparer;
 
 signals:
+    void wordPairListSignal(QList<QPair<QString, double> > wordValuePairs_);
 
 public slots:
 };

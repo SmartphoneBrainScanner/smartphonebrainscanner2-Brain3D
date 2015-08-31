@@ -13,7 +13,6 @@ class GLWidget : public QGLWidget
 public:
     explicit GLWidget(QWidget *parent = 0);
     void updateColorForVertex(int vertex, double r, double g, double b, double a);
-    void updateWordCloud(QList<QPair<QString, double> >* wordValueList_);
     
 private:
     void paintGL ();
@@ -58,7 +57,8 @@ private:
     QRect betaRect;
 
     QRect wordRect;
-    QList<QPair<QString, double> >* wordValuePairs;
+    //QList<QPair<QString, double> > wordValuePairs;
+    QString wordcloudDrawString;
 
     QRect rotationRect;
 
@@ -100,6 +100,7 @@ public slots:
     void updateGyroX(double gyroX_);
     void updateGyroY(double gyroY_);
     void deviceFound(QMap<QString, QVariant> params);
+    void updateWordCloud(QList<QPair<QString, double> > wordValueList_);
     //void valueSignal(QVariant number);
 
 };

@@ -1,6 +1,6 @@
 #include "wordcloud.h"
 
-void Wordcloud::initializewordcloud()
+Wordcloud::Wordcloud(QObject *parent)
 {
     loadWordList();
     initializePairs();
@@ -58,7 +58,7 @@ void Wordcloud::initializePairs()
         wordValuePairs.append(qMakePair(wordList.at(i),0));
 
     }
-    // BUG: later, the pairs are sorted - but then new values inserted into wordValuePairs will not correspond to the correct word!
+    // BUG: later, the pairs are sorted - but then new values inserted into wordValuePairs will not correspond to the correct word! Save init list, copy over every iteration.
 qDebug() << "pairs initialized";
 }
 
@@ -75,6 +75,7 @@ void Wordcloud::calculatePairs(DTU::DtuArray2D<double>* responseMatrix_ )
         {
            sum += (*responseMatrix_)[j][i];
         }
+        // This is probably wrong.
         (*responseVector)[0][i] = sum;
 
     }
@@ -89,15 +90,9 @@ void Wordcloud::calculatePairs(DTU::DtuArray2D<double>* responseMatrix_ )
     }
 
     //sorting:
-
     std::sort(wordValuePairs.begin(), wordValuePairs.end(), sorter<QString, double>);
 
-    //Need to get wordValuePairs to glmwidget, how?
-    //MyCallback->updateWordcloud(wordValuePairs);
+    emit wordPairListSignal(wordValuePairs);
 }
-
-
-
-
 
 

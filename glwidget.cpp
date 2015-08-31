@@ -300,7 +300,7 @@ void GLWidget::paintGL()
 
     painter.fillRect(wordRect,QColor(156,81,0));
 
-    //painter.drawText(wordRect,Qt::AlignCenter,mynumber.toString());
+    painter.drawText(wordRect,Qt::AlignCenter,wordcloudDrawString);
 
 
     painter.end();
@@ -309,10 +309,16 @@ void GLWidget::paintGL()
 
 }
 
-void GLWidget::updateWordCloud(QList<QPair<QString, double> >* wordValueList_)
+void GLWidget::updateWordCloud(QList<QPair<QString, double> > wordValueList_)
+// TODO: Make into slot
 {
-    wordValuePairs = wordValueList_;
-    //qDebug() << "updateWordCloud has been called";
+    //wordValuePairs = wordValueList_;
+
+    for (int i=0; i<10; i++)
+    {
+    wordcloudDrawString += wordValueList_[i].first + "     " + QString::number(wordValueList_[i].second) + "\n";
+    }
+   // qDebug() << "updateWordCloud has been called";
 }
 
 void GLWidget::mousePressEvent(QMouseEvent* event)

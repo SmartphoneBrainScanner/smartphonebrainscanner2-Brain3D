@@ -15,14 +15,14 @@ MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
 
     QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(sourceReconstructionPowerReady()));
 
-    WordCloud.initializewordcloud();
+
 
     //QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionReady()),this,SLOT(sourceReconstructionReady()));
 
     //QObject::connect(glwidget,SIGNAL(turnSourceReconstructionPowerOn(int,int,int,int, QString)),this,SLOT(turnSourceReconstructionPowerOn(int,int,int,int, QString)));
     QObject::connect(glwidget,SIGNAL(turnSourceReconstructionPowerOn(int,int,int,int,QString)),this,SLOT(turnOnSourceReconstructionLoreta(int,int,int,int,QString)));
     QObject::connect(glwidget,SIGNAL(changeBand(QString)),this,SLOT(changeBand(QString)));
-    //QObject::connect(this, SIGNAL(valueSignal(QVariant)),glwidget,SLOT(valueSignal(QVariant)));
+    QObject::connect(&wordCloud, SIGNAL(wordPairListSignal(QList<QPair<QString, double> >)),glwidget,SLOT(updateWordCloud(QList<QPair<QString, double> >)));
 
 
     QObject::connect(this,SIGNAL(deviceFoundSignal(QMap<QString,QVariant>)),glwidget,SLOT(deviceFound(QMap<QString,QVariant>)));
@@ -120,12 +120,8 @@ void MyCallback::sourceReconstructionPowerReady()
 
 void MyCallback::calculateDataForWordCloud()
 {
-    WordCloud.calculatePairs(responseDataMatrix);
-}
-
-void MyCallback::updateWordcloud(QList<QPair<QString, double> >* wordValueList_)
-{
-    glwidget->updateWordCloud(wordValueList_);
+    // Call directly from sourceReconstructionPowerReady() ?
+    wordCloud.calculatePairs(responseDataMatrix);
 }
 
 void MyCallback::createColorMatrix2(DTU::DtuArray2D<double> *verticesData_)
