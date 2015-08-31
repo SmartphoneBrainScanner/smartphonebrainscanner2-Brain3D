@@ -286,40 +286,39 @@ void GLWidget::paintGL()
     painter.drawText(websiteRect,QString("github.com/SmartphoneBrainScanner"));
 
 
-    if (infoPressed)
-    {
-	painter.fillRect(infoRect,QColor(0,0,0,180));
-	painter.setPen(QColor(255,255,255));
-	painter.drawRect(infoRect);
-	painter.drawText(infoRect,Qt::AlignCenter, QString("Technical University of Denmark \n\n SmartphoneBrainScanner2: Tech Demo \n\n Jakob Eg Larsen, jel@imm.dtu.dk \n Arkadiusz Stopczynski, arks@imm.dtu.dk \n Carsten Stahlhut, cs@imm.dtu.dk \n Michael Kai Petersen, mkp@imm.dtu.dk \n Lars Kai Hansen, lkh@imm.dtu.dk"));
+    if (infoPressed) {
+        painter.fillRect(infoRect,QColor(0, 0, 0, 180));
+        painter.setPen(QColor(255, 255, 255));
+        painter.drawRect(infoRect);
+        painter.drawText(infoRect, Qt::AlignCenter,
+                         QString("Technical University of Denmark \n\n SmartphoneBrainScanner2: "
+                                 "Tech Demo \n\n Jakob Eg Larsen, jel@imm.dtu.dk\n"
+                                 "Arkadiusz Stopczynski, arks@imm.dtu.dk\n"
+                                 "Carsten Stahlhut, cs@imm.dtu.dk \n"
+                                 "Michael Kai Petersen, mkp@imm.dtu.dk \n"
+                                 "Lars Kai Hansen, lkh@imm.dtu.dk"));
     }
 
-    //Wordcloud
-
+    // Wordcloud rectangle
     painter.setPen(QColor("white"));
-
-    painter.fillRect(wordRect,QColor(156,81,0));
-
-    painter.drawText(wordRect,Qt::AlignCenter,wordcloudDrawString);
-
+    painter.fillRect(wordRect, QColor(156,81,0));
+    painter.drawText(wordRect, Qt::AlignCenter, wordcloudDrawString);
 
     painter.end();
     swapBuffers();
-
-
 }
+
 
 void GLWidget::updateWordCloud(QList<QPair<QString, double> > wordValueList_)
-// TODO: Make into slot
 {
-    //wordValuePairs = wordValueList_;
-    wordcloudDrawString = "Word     Value\n";
-    for (int i=0; i<10; i++)
-    {
-    wordcloudDrawString += wordValueList_[i].first + "     " + QString::number(wordValueList_[i].second) + "\n";
-    }
-   // qDebug() << "updateWordCloud has been called";
+    wordcloudDrawString = "Annotation\n-----------------\n";
+    for (int i = 0; i < 15; i++)
+        wordcloudDrawString += wordValueList_[i].first + "\n";
+
+    // The value is left out, but could be added.
+    // QString::number(wordValueList_[i].second)
 }
+
 
 void GLWidget::mousePressEvent(QMouseEvent* event)
 {
@@ -427,13 +426,13 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event)
 
 }
 
-void GLWidget::mouseReleaseEvent(QMouseEvent* event)
+void GLWidget::mouseReleaseEvent(QMouseEvent*)
 {
     dragging = false;
 }
 
 
-void GLWidget::timerEvent(QTimerEvent *e)
+void GLWidget::timerEvent(QTimerEvent *)
 {
     updateGL();
 }
@@ -465,7 +464,7 @@ void GLWidget::setInfoText(QString text)
     infoText = text;
 }
 
-void GLWidget::deviceFound(QMap<QString, QVariant> params)
+void GLWidget::deviceFound(QMap<QString, QVariant>)
 {
     devicePresent = 1;
     setInfoText("waiting for data...");

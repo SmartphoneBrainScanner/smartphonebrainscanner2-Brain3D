@@ -17,10 +17,10 @@ private:
     QStringList wordList;
     DTU::DtuArray2D<double>* weightMatrix;
     QList<QPair<QString, double> > wordValuePairs;
+    QList<QPair<QString, double> > sortedWordValuePairs;
     DTU::DtuArray2D<double>* responseVector;
     DTU::DtuArray2D<double>* responseWeightValues;
 
-    void loadWordList();
     void loadWordMatrix();
     void initializePairs();
 

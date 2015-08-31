@@ -16,8 +16,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     mw.setAttribute(Qt::WA_QuitOnClose);
 
     MyCallback* myCallback = new MyCallback(mw.glwidget);
-    Sbs2EmotivDataReader* sbs2DataReader = Sbs2EmotivDataReader::New(myCallback);
-
+    // Sbs2EmotivDataReader* sbs2DataReader = Sbs2EmotivDataReader::New(myCallback);
+    Sbs2EmocapDataReader* sbs2DataReader = Sbs2EmocapDataReader::New(myCallback);
 
     QObject::connect(&app,SIGNAL(aboutToQuit()),mw.glwidget,SLOT(quit()));
     QObject::connect(&app,SIGNAL(aboutToQuit()),sbs2DataReader,SLOT(aboutToQuit()));

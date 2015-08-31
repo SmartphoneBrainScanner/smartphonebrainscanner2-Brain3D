@@ -22,7 +22,8 @@ MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
     //QObject::connect(glwidget,SIGNAL(turnSourceReconstructionPowerOn(int,int,int,int, QString)),this,SLOT(turnSourceReconstructionPowerOn(int,int,int,int, QString)));
     QObject::connect(glwidget,SIGNAL(turnSourceReconstructionPowerOn(int,int,int,int,QString)),this,SLOT(turnOnSourceReconstructionLoreta(int,int,int,int,QString)));
     QObject::connect(glwidget,SIGNAL(changeBand(QString)),this,SLOT(changeBand(QString)));
-    QObject::connect(&wordCloud, SIGNAL(wordPairListSignal(QList<QPair<QString, double> >)),glwidget,SLOT(updateWordCloud(QList<QPair<QString, double> >)));
+    QObject::connect(&wordCloud, SIGNAL(wordPairListSignal(QList<QPair<QString, double> >)),
+                     glwidget, SLOT(updateWordCloud(QList<QPair<QString, double> >)));
 
 
     QObject::connect(this,SIGNAL(deviceFoundSignal(QMap<QString,QVariant>)),glwidget,SLOT(deviceFound(QMap<QString,QVariant>)));
