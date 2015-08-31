@@ -15,7 +15,7 @@ public:
 private:
     QStringList wordList;
     DTU::DtuArray2D<double>* weightMatrix;
-    QList<QPair<QString, double> >* wordValuePairs;
+    QList<QPair<QString, double> > wordValuePairs;
     DTU::DtuArray2D<double>* responseVector;
     DTU::DtuArray2D<double>* responseWeightValues;
 
@@ -33,7 +33,7 @@ public slots:
 template<typename T1, typename T2>
 bool sorter(const QPair<T1,T2> & a, const QPair<T1,T2> & b)
 {
-    return a.second < b.second;
+    return a.second > b.second;
 }
 
 #endif // WORDCLOUD_H

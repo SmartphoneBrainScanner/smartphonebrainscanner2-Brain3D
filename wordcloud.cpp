@@ -55,8 +55,10 @@ void Wordcloud::initializePairs()
 {
     for (int i = 0; i < wordList.size(); i++)
     {
-        wordValuePairs->append(qMakePair(wordList[i],0));
+        wordValuePairs.append(qMakePair(wordList.at(i),0));
+
     }
+    // BUG: later, the pairs are sorted - but then new values inserted into wordValuePairs will not correspond to the correct word!
 qDebug() << "pairs initialized";
 }
 
@@ -80,15 +82,15 @@ void Wordcloud::calculatePairs(DTU::DtuArray2D<double>* responseMatrix_ )
     responseWeightValues = new DTU::DtuArray2D<double>(1,weightMatrix->dim2());
     responseVector->multiply(weightMatrix, 1, responseWeightValues);
 
-    for (int i=0; i<wordValuePairs->size(); i++)
+    for (int i=0; i<wordValuePairs.size(); i++)
     {
-        (*wordValuePairs)[i].second = (*responseWeightValues)[0][i];
+        wordValuePairs[i].second = (*responseWeightValues)[0][i];
 
     }
 
     //sorting:
 
-    std::sort(wordValuePairs->begin(), wordValuePairs->end(), sorter<QString, double>);
+    std::sort(wordValuePairs.begin(), wordValuePairs.end(), sorter<QString, double>);
 
     //Need to get wordValuePairs to glmwidget, how?
     //MyCallback->updateWordcloud(wordValuePairs);
