@@ -143,63 +143,71 @@ void MyCallback::createColorMatrix2(DTU::DtuArray2D<double> *verticesData_)
 
 
 /**
-  This function sees 64x1028 input matrix and should produce 1028x3 color matrix ready to pass to visualization.
+  This function sees 64x1028 input matrix and write so the 1028x3 colorData matrix ready
+  for visualization.
   */
-
-
 void MyCallback::createColorMatrix(DTU::DtuArray2D<double> *verticesData_)
 {
-    double meanMax = 0;
+    // Min values across a window
     double meanMin = 0;
-
-
-    for (int t=0; t<minValues->size(); ++t)
-    {
-	meanMin += minValues->at(t);
-    }
+    for (int t = 0; t < minValues->size(); ++t)
+        meanMin += minValues->at(t);
     if (minValues->size())
-	meanMin /= (double)minValues->size();
-    for (int t=0; t<maxValues->size(); ++t)
-    {
-	meanMax += maxValues->at(t);
-    }
-    if (maxValues->size())
-	meanMax /= (double)maxValues->size();
+        meanMin /= (double)minValues->size();
 
+    // Max values across a window
+    double meanMax = 0;
+    for (int t = 0; t < maxValues->size(); ++t)
+        meanMax += maxValues->at(t);
+    if (maxValues->size())
+        meanMax /= (double)maxValues->size();
+
+    // Current max and min over vertex values for the current sample
     double currentMax = -999999999;
     double currentMin = 9999999999;
 
     double scaling = meanMax - meanMin;
 
-    for (int vertex = 0; vertex<verticesData_->dim2(); ++vertex)
-    {
-	double this_vertex_power = 0.0;
-	for (int freq = lowFreq; freq < highFreq; ++freq)
-	{
-	    this_vertex_power += (*verticesData_)[freq][vertex];
+    // Iterate over vertices
+    for (int vertex = 0; vertex < verticesData_->dim2(); ++vertex) {
+        double this_vertex_power = 0.0;
+        // Iterate over frequencies
+        for (int freq = lowFreq; freq < highFreq; ++freq)
+            this_vertex_power += (*verticesData_)[freq][vertex];
 
-	}
-	this_vertex_power = 20 * qLn(this_vertex_power + 1)/qLn(10);
-	if (this_vertex_power > currentMax) currentMax = this_vertex_power;
-	if (this_vertex_power < currentMin) currentMin = this_vertex_power;
+        // Non-linear scaling
+        this_vertex_power = 20 * qLn(this_vertex_power + 1) / qLn(10);
 
-	double v = 0.0;
+        // Store current
+        if (this_vertex_power > currentMax)
+            currentMax = this_vertex_power;
+        if (this_vertex_power < currentMin)
+            currentMin = this_vertex_power;
 
+        // Convert vertex values to one between 0 and 1.
+        double v = (this_vertex_power - meanMin) / scaling;
+        if (v < 0.5)
+            v = 0;
+        if (v > 1.0)
+            v = 1.0;
 
-	v += (this_vertex_power - meanMin)/scaling * 1.0;
-	if (v < 0.5) v = 0;
-	if (v > 1.0) v = 1.0;
-
-	(*colorData)[vertex][0] = 1.0 - v;
-	(*colorData)[vertex][1] = 1.0 - v;
-	(*colorData)[vertex][2] = 1.0;
-	(*colorData)[vertex][3] = 1.0;
+        // Set vertex color from scaled vertex value
+        (*colorData)[vertex][0] = 1.0 - v;
+        (*colorData)[vertex][1] = 1.0 - v;
+        (*colorData)[vertex][2] = 1.0;
+        (*colorData)[vertex][3] = 1.0;
     }
+
+    // Store min and max values in the window buffer
     minValues->append(currentMin);
-    if (minValues->size() == meanWindowLength) minValues->erase(minValues->begin());
+    if (minValues->size() == meanWindowLength)
+        minValues->erase(minValues->begin());
+
     maxValues->append(currentMax);
-    if (maxValues->size() == meanWindowLength) maxValues->erase(maxValues->begin());
+    if (maxValues->size() == meanWindowLength)
+        maxValues->erase(maxValues->begin());
 }
+
 
 void MyCallback::updateModel()
 {
