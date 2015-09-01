@@ -4,13 +4,12 @@
 MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
     Sbs2Callback(parent), glwidget(glwidget_)
 {
-
-
-
-    verticesData = new DTU::DtuArray2D<double>(64,1028);
-    colorData = new DTU::DtuArray2D<double>(1028,4); //rgba values
+    verticesData = new DTU::DtuArray2D<double>(64,1028);  // frequency-times-vertices
+    colorData = new DTU::DtuArray2D<double>(1028,4);      // rgba values
+    normalizedVertexData = new DTU::DtuArray2D<double>(1, 1028);
 
     (*colorData) = 0;
+    (*normalizedVertexData) = 0;
 
 
     QObject::connect(sbs2DataHandler,SIGNAL(sourceReconstructionSpectrogramReady()),this,SLOT(sourceReconstructionPowerReady()));
@@ -113,17 +112,95 @@ void MyCallback::getData(Sbs2Packet *packet)
 void MyCallback::sourceReconstructionPowerReady()
 {
     responseDataMatrix = (sbs2DataHandler->getSourceReconstructionSpectrogramValues());
-    createColorMatrix(sbs2DataHandler->getSourceReconstructionSpectrogramValues());
-    //qDebug() << (*responseDataMatrix)[0][500];
-    updateModel();
+    normalizeVertexData(sbs2DataHandler->getSourceReconstructionSpectrogramValues(), normalizedVertexData);
+
+    // Compute and update word cloud
     calculateDataForWordCloud();
+
+    // Compute color for surface and update model
+    setColorDataFromNormalizedVertexData(normalizedVertexData);
+    updateModel();
 }
 
 void MyCallback::calculateDataForWordCloud()
 {
     // Call directly from sourceReconstructionPowerReady() ?
-    wordCloud.calculatePairs(responseDataMatrix);
+    // wordCloud.calculatePairs(responseDataMatrix);
+    wordCloud.calculatePairsFromResponseVector(normalizedVertexData);
 }
+
+
+void MyCallback::normalizeVertexData(DTU::DtuArray2D<double> *verticesData_,
+                                     DTU::DtuArray2D<double> *normalizedVertexData_)
+{
+    // Min values across a window
+    double meanMin = 0;
+    for (int t = 0; t < minValues->size(); ++t)
+        meanMin += minValues->at(t);
+    if (minValues->size())
+        meanMin /= (double)minValues->size();
+
+    // Max values across a window
+    double meanMax = 0;
+    for (int t = 0; t < maxValues->size(); ++t)
+        meanMax += maxValues->at(t);
+    if (maxValues->size())
+        meanMax /= (double)maxValues->size();
+
+    // Current max and min over vertex values for the current sample
+    double currentMax = -999999999;
+    double currentMin = 9999999999;
+
+    double scaling = meanMax - meanMin;
+
+    // Iterate over vertices
+    for (int vertex = 0; vertex < verticesData_->dim2(); ++vertex) {
+        double this_vertex_power = 0.0;
+        // Iterate over frequencies
+        for (int freq = lowFreq; freq < highFreq; ++freq)
+            this_vertex_power += (*verticesData_)[freq][vertex];
+
+        // Non-linear scaling
+        this_vertex_power = 20 * qLn(this_vertex_power + 1) / qLn(10);
+
+        // Store current
+        if (this_vertex_power > currentMax)
+            currentMax = this_vertex_power;
+        if (this_vertex_power < currentMin)
+            currentMin = this_vertex_power;
+
+        // Convert vertex values to one between 0 and 1.
+        double v = (this_vertex_power - meanMin) / scaling;
+        if (v < 0.5)
+            v = 0;
+        if (v > 1.0)
+            v = 1.0;
+
+        (*normalizedVertexData_)[0][vertex] = v;
+    }
+
+    // Store min and max values in the window buffer
+    minValues->append(currentMin);
+    if (minValues->size() == meanWindowLength)
+        minValues->erase(minValues->begin());
+
+    maxValues->append(currentMax);
+    if (maxValues->size() == meanWindowLength)
+        maxValues->erase(maxValues->begin());
+}
+
+
+void MyCallback::setColorDataFromNormalizedVertexData(DTU::DtuArray2D<double> *normalizedVertexData_)
+{
+    for (int vertex = 0; vertex < normalizedVertexData_->dim2(); ++vertex) {
+        double v = (*normalizedVertexData_)[0][vertex];
+        (*colorData)[vertex][0] = 1.0-v;
+        (*colorData)[vertex][1] = 1.0-v;
+        (*colorData)[vertex][2] = 1.0;
+        (*colorData)[vertex][3] = 1.0;
+    }
+}
+
 
 void MyCallback::createColorMatrix2(DTU::DtuArray2D<double> *verticesData_)
 {

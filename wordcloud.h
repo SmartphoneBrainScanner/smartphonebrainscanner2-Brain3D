@@ -6,12 +6,15 @@
 #include <glwidget.h>
 #include <algorithm>
 
+
 class Wordcloud : public QObject
 {
     Q_OBJECT
+
 public:
     explicit Wordcloud(QObject *parent = 0);
     void calculatePairs(DTU::DtuArray2D<double>* responsematrix_ );
+    void calculatePairsFromResponseVector(DTU::DtuArray2D<double>* responseVector_);
 
 private:
     QStringList wordList;

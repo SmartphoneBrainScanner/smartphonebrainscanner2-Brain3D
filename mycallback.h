@@ -20,6 +20,7 @@ private:
     GLWidget* glwidget;
     DTU::DtuArray2D<double>* colorData;
     DTU::DtuArray2D<double>* responseDataMatrix;
+    DTU::DtuArray2D<double>* normalizedVertexData;
     Wordcloud wordCloud;
     int lowFreq; //included
     int highFreq; //excluded
@@ -32,12 +33,13 @@ private:
     int meanWindowLength;
     QVector<double> cmap;
 
-private:
     void createColorMatrix(DTU::DtuArray2D<double>* verticesData_);
     void updateModel();
     void calculateDataForWordCloud();
     void createColorMatrix2(DTU::DtuArray2D<double> *verticesData_);
-
+    void normalizeVertexData(DTU::DtuArray2D<double> *verticesData_,
+                             DTU::DtuArray2D<double> *normalizedVertexData_);
+    void setColorDataFromNormalizedVertexData(DTU::DtuArray2D<double> *normalizedVertexData_);
 
 signals:
    // void valueSignal(QVariant value);

@@ -5,6 +5,10 @@ Wordcloud::Wordcloud(QObject *)
     // loadWordList();
     loadWordMatrix();
     initializePairs();
+
+    responseWeightValues = new DTU::DtuArray2D<double>(1, weightMatrix->dim2());
+    (*responseWeightValues) = 0;
+
     qDebug() << "Wordcloud::Wordcloud: initialization success!";
 }
 
@@ -48,6 +52,22 @@ void Wordcloud::initializePairs()
 }
 
 
+void Wordcloud::calculatePairsFromResponseVector(DTU::DtuArray2D<double> *responseVector_)
+{
+    responseVector_->multiply(weightMatrix, 1, responseWeightValues);
+
+    // Iterating over words
+    for (int i=0; i < wordValuePairs.size(); i++)
+        wordValuePairs[i].second = (*responseWeightValues)[0][i];
+
+    // Copy and sorting
+    sortedWordValuePairs = wordValuePairs;
+    std::sort(sortedWordValuePairs.begin(), sortedWordValuePairs.end(), sorter<QString, double>);
+
+    emit wordPairListSignal(sortedWordValuePairs);
+}
+
+
 void Wordcloud::calculatePairs(DTU::DtuArray2D<double>* responseMatrix_ )
 {
     responseVector = new DTU::DtuArray2D<double>(1, responseMatrix_->dim2());
@@ -63,17 +83,7 @@ void Wordcloud::calculatePairs(DTU::DtuArray2D<double>* responseMatrix_ )
         (*responseVector)[0][i] = sum;
     }
 
-    responseWeightValues = new DTU::DtuArray2D<double>(1, weightMatrix->dim2());
-    responseVector->multiply(weightMatrix, 1, responseWeightValues);
-
-    for (int i=0; i<wordValuePairs.size(); i++)
-        wordValuePairs[i].second = (*responseWeightValues)[0][i];
-
-    // Copy and sorting
-    sortedWordValuePairs = wordValuePairs;
-    std::sort(sortedWordValuePairs.begin(), sortedWordValuePairs.end(), sorter<QString, double>);
-
-    emit wordPairListSignal(sortedWordValuePairs);
+    calculatePairsFromResponseVector(responseVector);
 }
 
 

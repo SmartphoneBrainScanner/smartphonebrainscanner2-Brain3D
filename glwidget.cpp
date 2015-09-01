@@ -312,8 +312,13 @@ void GLWidget::paintGL()
 void GLWidget::updateWordCloud(QList<QPair<QString, double> > wordValueList_)
 {
     wordcloudDrawString = "Annotation\n-----------------\n";
-    for (int i = 0; i < 15; i++)
-        wordcloudDrawString += wordValueList_[i].first + "\n";
+    for (int i = 0; i < 10; i++) {
+        if (wordValueList_[i].second > 0) {
+            wordcloudDrawString += wordValueList_[i].first + "\n";
+        } else {
+            wordcloudDrawString += "\n";
+        }
+    }
 
     // The value is left out, but could be added.
     // QString::number(wordValueList_[i].second)
