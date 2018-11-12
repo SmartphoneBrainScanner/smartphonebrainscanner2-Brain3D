@@ -171,7 +171,7 @@ GLfloat*
 /* _glmFindGroup: Find a group in the model
  */
 GLMgroup*
-	_glmFindGroup(GLMmodel* model, char* name)
+	_glmFindGroup(GLMmodel* model, const char* name)
 {
     GLMgroup* group;
 
@@ -190,7 +190,7 @@ GLMgroup*
 /* _glmAddGroup: Add a group to the model
  */
 GLMgroup*
-	_glmAddGroup(GLMmodel* model, char* name)
+	_glmAddGroup(GLMmodel* model, const char* name)
 {
     GLMgroup* group;
 

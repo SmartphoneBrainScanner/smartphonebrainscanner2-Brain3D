@@ -190,10 +190,12 @@ bool Model::linkShaderProgram()
     if(program->link())
     {
 	qDebug() << "Program linked";
+        return true;
     }
     else
     {
 	qDebug() << "Failed to link program:" << program->log();
+        return false;
     }
 }
 
