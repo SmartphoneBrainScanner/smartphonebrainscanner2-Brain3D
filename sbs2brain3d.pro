@@ -26,3 +26,6 @@ RESOURCES += \
     resources.qrc
 
 win32:LIBS += opengl32.lib
+target.path = /bin/
+INSTALLS += target
+win32:RC_ICONS += brain.ico
