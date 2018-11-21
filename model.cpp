@@ -35,7 +35,17 @@ void Model::resetColors()
 
 void Model::load(QString filename)
 {
-    model = glmReadOBJ(filename.toLatin1().data());
+    if (filename.startsWith(":"))
+    {
+        QTemporaryDir d;
+        QString newFile = d.filePath(QLatin1String("model"));
+        QFile::copy(filename, newFile);
+        model = glmReadOBJ(newFile.toLatin1());
+    }
+    else
+    {
+        model = glmReadOBJ(filename.toLatin1());
+    }
     if(model->numtexcoords < 1)
     {
     qWarning() << "WARNING Missing UV map in file:" << filename.toLatin1();
