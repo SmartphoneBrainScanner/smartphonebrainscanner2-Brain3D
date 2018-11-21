@@ -3,10 +3,6 @@
 
 
 
-Model::Model()
-{
-}
-
 Model::Model(QString objectFile)
 {
     readGreyBrain=true;
