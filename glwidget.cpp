@@ -175,7 +175,7 @@ void GLWidget::paintGL()
 
     mainModelView.rotate(180,0.0,0.0,1.0);
     mainModelView.translate(0,1,0);
-    mainModelView.scale(1/4.5);
+    mainModelView.scale(1/4.5f);
 
 
     model->draw(mainModelView);
@@ -403,12 +403,14 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event)
 
 void GLWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+    Q_UNUSED(event);
     dragging = false;
 }
 
 
 void GLWidget::timerEvent(QTimerEvent *e)
 {
+    Q_UNUSED(e);
     updateGL();
 }
 

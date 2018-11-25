@@ -171,7 +171,7 @@ GLfloat*
 /* _glmFindGroup: Find a group in the model
  */
 GLMgroup*
-	_glmFindGroup(GLMmodel* model, char* name)
+	_glmFindGroup(GLMmodel* model, const char* name)
 {
     GLMgroup* group;
 
@@ -190,7 +190,7 @@ GLMgroup*
 /* _glmAddGroup: Add a group to the model
  */
 GLMgroup*
-	_glmAddGroup(GLMmodel* model, char* name)
+	_glmAddGroup(GLMmodel* model, const char* name)
 {
     GLMgroup* group;
 
@@ -313,13 +313,13 @@ static GLvoid
     for (i = 0; i < nummaterials; i++) {
 	model->materials[i].name = NULL;
 	model->materials[i].shininess = 0;
-	model->materials[i].diffuse[0] = 0.8;
-	model->materials[i].diffuse[1] = 0.8;
-	model->materials[i].diffuse[2] = 0.8;
+	model->materials[i].diffuse[0] = 0.8f;
+	model->materials[i].diffuse[1] = 0.8f;
+	model->materials[i].diffuse[2] = 0.8f;
 	model->materials[i].diffuse[3] = 1.0;
-	model->materials[i].ambient[0] = 0.2;
-	model->materials[i].ambient[1] = 0.2;
-	model->materials[i].ambient[2] = 0.2;
+	model->materials[i].ambient[0] = 0.2f;
+	model->materials[i].ambient[1] = 0.2f;
+	model->materials[i].ambient[2] = 0.2f;
 	model->materials[i].ambient[3] = 1.0;
 	model->materials[i].specular[0] = 0.0;
 	model->materials[i].specular[1] = 0.0;
@@ -1248,7 +1248,7 @@ GLvoid
 	    phi = 0.0;
 	} else {
 	    if(z == 0.0)
-		phi = 3.14159265 / 2.0;
+		phi = 3.14159265f / 2.0f;
 	    else
 		phi = acos(z / rho);
 
@@ -1260,7 +1260,7 @@ GLvoid
 #endif
 
 	    if(y == 0.0)
-		theta = 3.141592365 / 2.0;	/* acos(x / r); */
+		theta = 3.141592365f / 2.0f;	/* acos(x / r); */
 	    else
 		theta = asin(y / r) + (3.14159265 / 2.0);
 	}
@@ -1328,7 +1328,7 @@ GLvoid
  * filename - name of the file containing the Wavefront .OBJ format data.
  */
 GLMmodel*
-	glmReadOBJ(char* filename)
+	glmReadOBJ(const char* filename)
 {
     setlocale(LC_NUMERIC, "en_US"); // make sure we don't try to read commas instead of dots with fscanf.
     GLMmodel* model;

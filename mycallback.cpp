@@ -36,15 +36,7 @@ MyCallback::MyCallback(GLWidget *glwidget_, QObject *parent) :
 
     changeBand("alpha");
 
-    int channels2 = 14;
-    int sources2 = 1028;
-    int sourcesReconstructionDelta2 = 8;
-
-    int numDatosTrain2 = 8;
-    int numDatosTest2 = 6;
-
     collectedSamples = 0;
-    int visualized = 1;
 
     QVector<double> lambdas = QVector<double>(5);
 

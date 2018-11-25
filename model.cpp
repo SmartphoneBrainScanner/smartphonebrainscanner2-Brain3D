@@ -3,10 +3,6 @@
 
 
 
-Model::Model()
-{
-}
-
 Model::Model(QString objectFile)
 {
     readGreyBrain=true;
@@ -39,7 +35,17 @@ void Model::resetColors()
 
 void Model::load(QString filename)
 {
-    model = glmReadOBJ(filename.toLatin1().data());
+    if (filename.startsWith(":"))
+    {
+        QTemporaryDir d;
+        QString newFile = d.filePath(QLatin1String("model"));
+        QFile::copy(filename, newFile);
+        model = glmReadOBJ(newFile.toLatin1());
+    }
+    else
+    {
+        model = glmReadOBJ(filename.toLatin1());
+    }
     if(model->numtexcoords < 1)
     {
     qWarning() << "WARNING Missing UV map in file:" << filename.toLatin1();
@@ -50,7 +56,7 @@ void Model::load(QString filename)
     while (group)
     {
 	ModelGroup grp;
-	for(int i = 0; i < group->numtriangles; i++)
+	for(unsigned int i = 0; i < group->numtriangles; i++)
 	{
 	    ModelTriangle* triangle = new ModelTriangle();
 	    QVector<QVector3D> verts;
@@ -190,10 +196,12 @@ bool Model::linkShaderProgram()
     if(program->link())
     {
 	qDebug() << "Program linked";
+        return true;
     }
     else
     {
 	qDebug() << "Failed to link program:" << program->log();
+        return false;
     }
 }
 

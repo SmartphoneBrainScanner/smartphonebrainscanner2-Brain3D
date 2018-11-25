@@ -40,7 +40,6 @@ public slots:
 class Model
 {
 public:
-    Model();
     Model(QString filename);
 
     // functions
