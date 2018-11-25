@@ -56,7 +56,7 @@ void Model::load(QString filename)
     while (group)
     {
 	ModelGroup grp;
-	for(int i = 0; i < group->numtriangles; i++)
+	for(unsigned int i = 0; i < group->numtriangles; i++)
 	{
 	    ModelTriangle* triangle = new ModelTriangle();
 	    QVector<QVector3D> verts;
