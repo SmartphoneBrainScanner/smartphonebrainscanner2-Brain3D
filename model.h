@@ -2,14 +2,17 @@
 #define MODEL_H
 
 #include <QObject>
-#include <QtOpenGL>
 #include <QPainter>
 #include <QPaintEngine>
 #include <QMap>
 #include <QVector>
 
 
+
 #include "glm.h"
+
+class QOpenGLContext;
+class QOpenGLShaderProgram;
 
 class ModelTriangle
 {
@@ -48,7 +51,7 @@ public:
     void setTexture(GLuint texture);
     bool setVertexShaderFile(QString filename);
     bool setFragmentShaderFile(QString filename);
-    void setProgram(QGLShaderProgram *program);
+    void setProgram(QOpenGLShaderProgram *program);
     bool linkShaderProgram();
     void initShaderProgram();
     void updateColorForVertex(int vertex, qreal r, qreal g, qreal b, qreal a);
@@ -60,7 +63,7 @@ public:
     QVector<QVector3D> normals;
     QVector<ModelGroup> groups;
     GLuint texture;
-    QGLShaderProgram* program;
+    QOpenGLShaderProgram* program;
     int vertexAttr;
     int normalAttr;
     int matrixUniform;
@@ -69,7 +72,7 @@ public:
     int colorAttr;
     int readGreyBrain;
     int lightAttr;
-    QGLContext* context;
+    QOpenGLContext* context;
 };
 
 #endif // MODEL_H

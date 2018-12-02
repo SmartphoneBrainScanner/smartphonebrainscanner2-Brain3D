@@ -1,12 +1,13 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include <QGLWidget>
-#include <QtOpenGL>
+#include <QOpenGLWidget>
 #include <model.h>
 #include <sbs2common.h>
+#include <QMatrix4x4>
+#include <QBasicTimer>
 
-class GLWidget : public QGLWidget
+class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
