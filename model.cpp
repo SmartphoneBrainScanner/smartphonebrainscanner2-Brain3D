@@ -1,15 +1,14 @@
 #include "model.h"
 #include <colordata.h>
-
+#include <QOpenGLShaderProgram>
+#include <QTemporaryDir>
 
 
 Model::Model(QString objectFile)
 {
     readGreyBrain=true;
-    QGLFormat fmt;
-    QGLFormat::setDefaultFormat(fmt);
-    context = new QGLContext(fmt);
-    program = new QGLShaderProgram(QGLContext::currentContext());
+    context = new QOpenGLContext();
+    program = new QOpenGLShaderProgram(context);
 
     load(objectFile);
 }
@@ -162,7 +161,7 @@ bool Model::setFragmentShaderFile(QString filename)
 
 
     qDebug() << "bool Model::setFragmentShaderFile(QString filename)";
-    QGLShader* shaderF = new QGLShader(QGLShader::Fragment, QGLContext::currentContext());
+    QOpenGLShader* shaderF = new QOpenGLShader(QOpenGLShader::Fragment, context);
     qDebug() << "bool Model::setFragmentShaderFile(QString filename) 1";
     if(!shaderF->compileSourceFile(filename))
     {
@@ -178,7 +177,7 @@ bool Model::setFragmentShaderFile(QString filename)
 
 bool Model::setVertexShaderFile(QString filename)
 {
-    QGLShader* shaderV = new QGLShader(QGLShader::Vertex, QGLContext::currentContext());
+    QOpenGLShader* shaderV = new QOpenGLShader(QOpenGLShader::Vertex, context);
 
     if(!shaderV->compileSourceFile(filename)) {
 	qDebug() << "Could not load shader file " + filename + ": " << program->log();

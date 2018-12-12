@@ -23,6 +23,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     mw.setAttribute(Qt::WA_QuitOnClose);
 
     MyCallback* myCallback = new MyCallback(mw.glwidget);
+#ifndef Q_OS_ANDROID
     Sbs2DataReader* sbs2DataReader = nullptr;
     if (!parser.isSet(dataFilePath))
     {
@@ -32,6 +33,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     {
         sbs2DataReader = new Sbs2FileDataReader(myCallback,parser.value(dataFilePath));
     }
+#else
+    Sbs2DataReader* sbs2DataReader = new Sbs2FileDataReader(myCallback,"assets:/sbs2data_2018_12_01_21_07_22_Test.raw");
+#endif
 
 
     QObject::connect(&app,SIGNAL(aboutToQuit()),mw.glwidget,SLOT(quit()));

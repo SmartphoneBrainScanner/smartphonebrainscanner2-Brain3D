@@ -1,17 +1,17 @@
 #include "glwidget.h"
 
+#include <QMouseEvent>
+#include <QApplication>
+
 #if defined(Q_OS_MAC)
 #include <OpenGL.h>
 #endif
 
 GLWidget::GLWidget(QWidget *parent) :
-    QGLWidget(parent),
+    QOpenGLWidget(parent),
     timer(new QBasicTimer)
 {
 
-    setAttribute(Qt::WA_PaintOnScreen);
-    setAttribute(Qt::WA_NoSystemBackground);
-    setAutoBufferSwap(false);
     model = new Model(Sbs2Common::getRootAppPath() + QString("vertface_brain_reduced.obj"));
     sourceRecOn = 0;
 
@@ -102,6 +102,7 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::initializeGL()
 {
+    initializeOpenGLFunctions();
 #if defined(Q_OS_MAC)
     const GLint swapInterval = 1;
     CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
@@ -291,8 +292,6 @@ void GLWidget::paintGL()
     }
 
     painter.end();
-    swapBuffers();
-
 }
 
 void GLWidget::mousePressEvent(QMouseEvent* event)
@@ -335,7 +334,7 @@ void GLWidget::mousePressEvent(QMouseEvent* event)
 	    {
 		sourceRecOn = 1;
 		setInfoText("loading...");
-		this->updateGL();
+		this->update();
 #ifdef Q_WS_MAEMO_5
 		emit turnSourceReconstructionPowerOn(128,32,8*1,8*60, "emotiv");
 #else
@@ -411,7 +410,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent* event)
 void GLWidget::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
-    updateGL();
+    update();
 }
 
 void GLWidget::updateColorForVertex(int vertex, double r, double g, double b, double a)
